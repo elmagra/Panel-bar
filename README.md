@@ -4,7 +4,7 @@ Mini launcher personal para Windows 11 con icono en la bandeja del sistema, pane
 
 ## Descarga (v1.0)
 
-1. Ve a [Releases](https://github.com/mmyzx/Panel-bar/releases/latest).
+1. Ve a [Releases](https://github.com/elmagra/Panel-bar/releases/latest).
 2. Descarga `PanelTray-v1.0.0-win-x64.zip`.
 3. Extrae el zip y ejecuta `PanelTray.exe`.
 4. Abre el panel con el icono de la bandeja o con la hotkey por defecto (`Ctrl+Alt+P`).
