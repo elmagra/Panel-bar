@@ -1,0 +1,144 @@
+<Window x:Class="PanelTray.Views.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:PanelTray.Views.Controls"
+        Title="Configuracion"
+        Width="880"
+        Height="620"
+        WindowStartupLocation="CenterScreen"
+        Closing="OnClosing"
+        Background="{DynamicResource WindowBgBrush}">
+    <Grid Margin="18">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="280" />
+            <ColumnDefinition Width="16" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Border Background="{DynamicResource CardBgBrush}" CornerRadius="16" Padding="12">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Bottom" Margin="0,10,0,0">
+                    <Button Content="Anadir desde instaladas" Click="OnAddInstalledAppClick" Style="{StaticResource PrimaryButtonStyle}" />
+                    <Button Content="Anadir aplicacion" Command="{Binding AddAppCommand}" Style="{StaticResource SecondaryButtonStyle}" />
+                    <Button Content="Eliminar seleccionada" Command="{Binding DeleteSelectedCommand}" Style="{StaticResource SecondaryButtonStyle}" />
+                    <Button Content="Restablecer orden" Command="{Binding ResetOrderCommand}" Style="{StaticResource SecondaryButtonStyle}" />
+                </StackPanel>
+
+                <TextBlock Text="Aplicaciones" FontSize="18" FontWeight="SemiBold" Margin="4,0,0,12" DockPanel.Dock="Top" />
+
+                <ListBox ItemsSource="{Binding Panel.Apps}"
+                         SelectedItem="{Binding SelectedApp, Mode=TwoWay}"
+                         Background="Transparent"
+                         BorderThickness="0"
+                         Foreground="{DynamicResource TextBrush}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <DockPanel Margin="2,6">
+                                <Ellipse Width="9" Height="9" Fill="{Binding StatusBrush}" Margin="0,0,8,0" DockPanel.Dock="Left" />
+                                <StackPanel>
+                                    <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold" />
+                                    <TextBlock Text="{Binding Category}" Foreground="{DynamicResource MutedTextBrush}" FontSize="12" />
+                                </StackPanel>
+                            </DockPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </DockPanel>
+        </Border>
+
+        <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <TextBlock Text="Editar aplicacion" FontSize="20" FontWeight="SemiBold" />
+
+                <Border Background="{DynamicResource CardBgBrush}" CornerRadius="16" Padding="16" Margin="0,12,0,18">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="Nombre" VerticalAlignment="Center" />
+                        <TextBox Grid.Column="1" Text="{Binding SelectedApp.DisplayName, UpdateSourceTrigger=PropertyChanged}" />
+
+                        <TextBlock Grid.Row="1" Text="Ejecutable" VerticalAlignment="Center" Margin="0,10,0,0" />
+                        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding SelectedApp.ExecutablePath, UpdateSourceTrigger=PropertyChanged}" Margin="0,10,8,0" />
+                        <Button Grid.Row="1" Grid.Column="2" Content="Examinar" Command="{Binding BrowseExecutableCommand}" Style="{StaticResource SecondaryButtonStyle}" Margin="0,10,0,0" />
+                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding SelectedApp.PathStatus}" Foreground="{DynamicResource MutedTextBrush}" FontSize="12" Margin="0,4,0,0" />
+
+                        <TextBlock Grid.Row="3" Text="Argumentos" VerticalAlignment="Center" Margin="0,10,0,0" />
+                        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding SelectedApp.Arguments, UpdateSourceTrigger=PropertyChanged}" Margin="0,10,0,0" />
+
+                        <TextBlock Grid.Row="4" Text="Proceso principal" VerticalAlignment="Center" Margin="0,10,0,0" />
+                        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding SelectedApp.ProcessName, UpdateSourceTrigger=PropertyChanged}" Margin="0,10,0,0" />
+
+                        <TextBlock Grid.Row="5" Text="Procesos secundarios" VerticalAlignment="Center" Margin="0,10,0,0" ToolTip="Separados por coma. Amarillo si solo estos estan activos." />
+                        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding SelectedApp.SecondaryProcessNames, UpdateSourceTrigger=PropertyChanged}" Margin="0,10,0,0" ToolTip="Ejemplo: RiotClientServices, EpicWebHelper" />
+
+                        <TextBlock Grid.Row="6" Text="Icono" VerticalAlignment="Center" Margin="0,10,0,0" />
+                        <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding SelectedApp.IconPath, UpdateSourceTrigger=PropertyChanged}" Margin="0,10,8,0" />
+                        <Button Grid.Row="6" Grid.Column="2" Content="Elegir" Command="{Binding BrowseIconCommand}" Style="{StaticResource SecondaryButtonStyle}" Margin="0,10,0,0" />
+
+                        <TextBlock Grid.Row="7" Text="Categoria" VerticalAlignment="Center" Margin="0,10,0,0" />
+                        <ComboBox Grid.Row="7" Grid.Column="1" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedApp.Category, Mode=TwoWay}" Margin="0,10,0,0" />
+
+                        <CheckBox Grid.Row="8" Grid.Column="1" Content="Habilitada" IsChecked="{Binding SelectedApp.Enabled}" Margin="0,12,0,0" />
+                    </Grid>
+                </Border>
+
+                <TextBlock Text="Preferencias" FontSize="20" FontWeight="SemiBold" />
+
+                <Border Background="{DynamicResource CardBgBrush}" CornerRadius="16" Padding="16" Margin="0,12,0,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="190" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="Tema" VerticalAlignment="Center" />
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding Themes}" SelectedItem="{Binding Theme, Mode=TwoWay}" />
+
+                        <TextBlock Grid.Row="1" Text="Tamano de iconos" VerticalAlignment="Center" Margin="0,12,0,0" />
+                        <Slider Grid.Row="1" Grid.Column="1" Minimum="24" Maximum="96" TickFrequency="8" IsSnapToTickEnabled="True" Value="{Binding IconSize, Mode=TwoWay}" Margin="0,12,0,0" />
+
+                        <CheckBox Grid.Row="2" Grid.Column="1" Content="Mostrar nombres debajo de iconos" IsChecked="{Binding ShowNames}" Margin="0,12,0,0" />
+                        <CheckBox Grid.Row="3" Grid.Column="1" Content="Iniciar con Windows" IsChecked="{Binding StartWithWindows}" Margin="0,12,0,0" />
+                        <CheckBox Grid.Row="4" Grid.Column="1" Content="Ocultar panel al perder foco" IsChecked="{Binding HideOnFocusLost}" Margin="0,12,0,0" />
+
+                        <TextBlock Grid.Row="5" Text="Hotkey global" VerticalAlignment="Center" Margin="0,12,0,0" />
+                        <controls:HotkeyCaptureBox Grid.Row="5" Grid.Column="1" HotkeyText="{Binding HotkeyText, Mode=TwoWay}" Margin="0,12,0,0" />
+
+                        <TextBlock Grid.Row="6" Text="Ancho del panel" VerticalAlignment="Center" Margin="0,12,0,0" />
+                        <Slider Grid.Row="6" Grid.Column="1" Minimum="320" Maximum="720" TickFrequency="20" IsSnapToTickEnabled="True" Value="{Binding PanelWidth, Mode=TwoWay}" Margin="0,12,0,0" />
+
+                        <TextBlock Grid.Row="7" Text="Alto del panel" VerticalAlignment="Center" Margin="0,12,0,0" />
+                        <Slider Grid.Row="7" Grid.Column="1" Minimum="360" Maximum="900" TickFrequency="20" IsSnapToTickEnabled="True" Value="{Binding PanelHeight, Mode=TwoWay}" Margin="0,12,0,0" />
+                    </Grid>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Window>

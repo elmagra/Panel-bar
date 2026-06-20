@@ -1,0 +1,77 @@
+using System.Windows.Input;
+
+namespace PanelTray.Services;
+
+public static class HotkeyDisplayNames
+{
+    public static string FormatKey(Key key)
+    {
+        return key switch
+        {
+            Key.Space => "Space",
+            Key.OemPlus => "Plus",
+            Key.OemMinus => "Minus",
+            Key.OemComma => "Comma",
+            Key.OemPeriod => "Period",
+            Key.Oem1 => "Semicolon",
+            Key.Oem2 => "Slash",
+            Key.Oem3 => "Tilde",
+            Key.Oem4 => "BracketOpen",
+            Key.Oem5 => "Backslash",
+            Key.Oem6 => "BracketClose",
+            Key.Oem7 => "Quote",
+            Key.Oem102 => "Oem102",
+            Key.Tab => "Tab",
+            Key.Back => "Backspace",
+            Key.Delete => "Delete",
+            Key.Insert => "Insert",
+            Key.Home => "Home",
+            Key.End => "End",
+            Key.PageUp => "PageUp",
+            Key.PageDown => "PageDown",
+            Key.Up => "Up",
+            Key.Down => "Down",
+            Key.Left => "Left",
+            Key.Right => "Right",
+            Key.D0 => "0",
+            Key.D1 => "1",
+            Key.D2 => "2",
+            Key.D3 => "3",
+            Key.D4 => "4",
+            Key.D5 => "5",
+            Key.D6 => "6",
+            Key.D7 => "7",
+            Key.D8 => "8",
+            Key.D9 => "9",
+            Key.NumPad0 => "NumPad0",
+            Key.NumPad1 => "NumPad1",
+            Key.NumPad2 => "NumPad2",
+            Key.NumPad3 => "NumPad3",
+            Key.NumPad4 => "NumPad4",
+            Key.NumPad5 => "NumPad5",
+            Key.NumPad6 => "NumPad6",
+            Key.NumPad7 => "NumPad7",
+            Key.NumPad8 => "NumPad8",
+            Key.NumPad9 => "NumPad9",
+            Key.Multiply => "Multiply",
+            Key.Add => "Add",
+            Key.Subtract => "Subtract",
+            Key.Decimal => "Decimal",
+            Key.Divide => "Divide",
+            Key.F1 => "F1",
+            Key.F2 => "F2",
+            Key.F3 => "F3",
+            Key.F4 => "F4",
+            Key.F5 => "F5",
+            Key.F6 => "F6",
+            Key.F7 => "F7",
+            Key.F8 => "F8",
+            Key.F9 => "F9",
+            Key.F10 => "F10",
+            Key.F11 => "F11",
+            Key.F12 => "F12",
+            _ when key >= Key.A && key <= Key.Z => key.ToString(),
+            _ => key.ToString()
+        };
+    }
+}
